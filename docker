@@ -1,0 +1,34 @@
+docker pull guacamole/guacd
+docker pull guacamole/guacamole
+docker pull mysql/mysql-server
+
+# mysql
+docker run --name some-mysql \
+	-e MYSQL_ROOT_PASSWORD=root_password \
+	-e MYSQL_DATABASE=guaca_db \
+	-d mysql/mysql-server
+
+docker run --rm guacamole/guacamole /opt/guacamole/bin/initdb.sh --mysql > initdb.sql
+docker cp initdb.sql some-mysql:/initdb.sql
+
+docker exec -it some-mysql bash
+mysql -u root -p
+use guaca_db;
+source initdb.sql;
+create user guaca_user@'%' identified by 'guaca_password';
+grant SELECT,UPDATE,INSERT,DELETE on guaca_db.* to guaca_user@'%';
+flush privileges;
+exit;
+exit
+
+# guacd
+docker run --name some-guacd -d guacamole/guacd
+
+# guacamole
+docker run --name some-guacamole \
+	--link some-guacd:guacd \
+	--link some-mysql:mysql \
+	-e MYSQL_DATABASE=guaca_db \
+	-e MYSQL_USER=guaca_user \
+	-e MYSQL_PASSWORD=guaca_password \
+	-d -p 8080:8080 guacamole/guacamole
