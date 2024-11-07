@@ -1,0 +1,19 @@
+docker run --rm guacamole/guacamole /opt/guacamole/bin/initdb.sh --mysql > initdb.sql
+
+docker run --name some-mysql		\
+	-e MYSQL_DATABASE=guaca_db	\
+	-e MYSQL_USER=guaca_user	\
+	-e MYSQL_PASSWORD=guaca_password \
+	-v $(pwd)/initdb.sql:/docker-entrypoint-initdb.d/initdb.sql:ro	\
+	-d mysql/mysql-server
+
+docker run --name some-guacd -d guacamole/guacd
+
+docker run --name some-guacamole	\
+	--link some-guacd:guacd		\
+	--link some-mysql:mysql		\
+	-e MYSQL_DATABASE=guaca_db	\
+	-e MYSQL_USER=guaca_user	\
+	-e MYSQL_PASSWORD=guaca_password \
+	-e WEBAPP_CONTEXT=ROOT		\
+	-d -p 8080:8080 guacamole/guacamole
