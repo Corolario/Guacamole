@@ -30,3 +30,6 @@ services:
       WEBAPP_CONTEXT: ROOT
     ports:
       - "8080:8080"
+networks:
+  nome-rede:
+    external: true
