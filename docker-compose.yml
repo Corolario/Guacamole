@@ -11,12 +11,10 @@ services:
       MYSQL_PASSWORD: guaca_password
     volumes:
       - ./initdb.sql:/docker-entrypoint-initdb.d/initdb.sql:ro
-
   guacd:
     image: guacamole/guacd
     container_name: some-guacd
     restart: always
-
   guacamole:
     image: guacamole/guacamole
     container_name: some-guacamole
