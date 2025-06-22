@@ -1,3 +1,4 @@
+# docker network create nome-rede
 # docker run --rm guacamole/guacamole /opt/guacamole/bin/initdb.sh --mysql > initdb.sql
 services:
   mysql:
