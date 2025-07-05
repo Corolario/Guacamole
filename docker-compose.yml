@@ -23,6 +23,7 @@ services:
       - guacd
       - mysql
     environment:
+      MYSQL_HOSTNAME: some-mysql
       MYSQL_DATABASE: guaca_db
       MYSQL_USER: guaca_user
       MYSQL_PASSWORD: guaca_password
