@@ -11,10 +11,12 @@ services:
       MYSQL_PASSWORD: guaca_password
     volumes:
       - ./initdb.sql:/docker-entrypoint-initdb.d/initdb.sql:ro
+
   guacd:
     image: guacamole/guacd
     container_name: some-guacd
     restart: always
+
   guacamole:
     image: guacamole/guacamole
     container_name: some-guacamole
@@ -23,6 +25,7 @@ services:
       - guacd
       - mysql
     environment:
+      GUACD_HOSTNAME: some-guacd
       MYSQL_HOSTNAME: some-mysql
       MYSQL_DATABASE: guaca_db
       MYSQL_USER: guaca_user
@@ -30,6 +33,3 @@ services:
       WEBAPP_CONTEXT: ROOT
     ports:
       - "8080:8080"
-networks:
-  nome-rede:
-    external: true
