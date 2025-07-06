@@ -15,4 +15,5 @@ docker run --name some-guacamole	\
 	-e MYSQL_DATABASE=guaca_db	\
 	-e MYSQL_USER=guaca_user	\
 	-e MYSQL_PASSWORD=guaca_password \
+	-e WEBAPP_CONTEXT=ROOT		\
 	-d -p 8080:8080 guacamole/guacamole
